@@ -32,7 +32,7 @@ class ThemesManager extends StatefulWidget {
   /// child widget (wrap it with a build function to correctly get the context)
   final Widget child;
 
-  /// set an [id] if using multiple [ThemeManger]
+  /// set an [id], if using multiple [ThemeManger]
   final String id;
 
   /// use to set a light theme on start of an app. gets overwritten by system store.
@@ -404,12 +404,16 @@ class ThemesManagerState extends State<ThemesManager> {
       if (widget.keepSettingOnDisableFollow) {
         _mode = value
             ? ThemeMode.system
-            : checkDark() ? ThemeMode.dark : ThemeMode.light;
+            : checkDark()
+                ? ThemeMode.dark
+                : ThemeMode.light;
       } else {
         final isDark = _sharedPrefs?.getBool('${widget.id}-dark-mode');
         _mode = value
             ? ThemeMode.system
-            : isDark != null && isDark ? ThemeMode.dark : ThemeMode.light;
+            : isDark != null && isDark
+                ? ThemeMode.dark
+                : ThemeMode.light;
       }
     });
 
@@ -523,7 +527,8 @@ class ThemesManagerState extends State<ThemesManager> {
 
   /// reset every settings throughout the whole app.
   ///
-  /// ! ** Warning ** if you're using [SharedPreferences] in other parts in your app, avoid using this function.
+  /// ! ** Warning ** if you're using [SharedPreferences] in other parts of your app, avoid using this function.
+  @deprecated
   Future<bool> resetAll() async {
     return _sharedPrefs.clear();
   }
