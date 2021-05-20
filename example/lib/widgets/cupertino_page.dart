@@ -28,7 +28,7 @@ class CupertinoStoreHomePage extends StatelessWidget {
         ],
       ),
       tabBuilder: (context, index) {
-        CupertinoTabView returnValue;
+        late CupertinoTabView returnValue;
         switch (index) {
           case 0:
             returnValue = CupertinoTabView(builder: (context) {
@@ -36,7 +36,7 @@ class CupertinoStoreHomePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: ThemesManager.of(context)
+                  children: ThemesManager.of(context)!
                       .cupertinoThemesMap
                       .keys
                       .map((themeKey) {
@@ -46,19 +46,19 @@ class CupertinoStoreHomePage extends StatelessWidget {
                         vertical: 5,
                       ),
                       child: CupertinoButton(
-                        onPressed: () => ThemesManager.of(context)
+                        onPressed: () => ThemesManager.of(context)!
                             .setCupertinoTheme(themeKey),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            ThemesManager.of(context)
-                                .cupertinoThemesMap[themeKey]
-                                .name,
+                            ThemesManager.of(context)!
+                                .cupertinoThemesMap[themeKey]!
+                                .name!,
                             softWrap: false,
                             overflow: TextOverflow.clip,
                           ),
                         ),
-                        color: ThemesManager.of(context)
+                        color: ThemesManager.of(context)!
                                     .currentCupertinoThemeKey ==
                                 themeKey
                             ? CupertinoTheme.of(context).primaryColor

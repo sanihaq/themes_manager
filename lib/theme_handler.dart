@@ -413,25 +413,27 @@ class ThemesManagerState extends State<ThemesManager> {
 
   /// set [themeMode] value to [ThemeMode.system] by passing [true],
   /// or pass [false] to change [themeMode] to [ThemeMode.dark] or [ThemeMode.light]
-  void setThemeModeToSystem(bool value) {
-    setState(() {
-      if (widget.keepSettingOnDisableFollow) {
-        _mode = value
-            ? ThemeMode.system
-            : checkDark()
-                ? ThemeMode.dark
-                : ThemeMode.light;
-      } else {
-        final isDark = _sharedPrefs?.getBool('${widget.id}-dark-mode');
-        _mode = value
-            ? ThemeMode.system
-            : isDark != null && isDark
-                ? ThemeMode.dark
-                : ThemeMode.light;
-      }
-    });
+  void setThemeModeToSystem(bool? value) {
+    if (value != null) {
+      setState(() {
+        if (widget.keepSettingOnDisableFollow) {
+          _mode = value
+              ? ThemeMode.system
+              : checkDark()
+                  ? ThemeMode.dark
+                  : ThemeMode.light;
+        } else {
+          final isDark = _sharedPrefs?.getBool('${widget.id}-dark-mode');
+          _mode = value
+              ? ThemeMode.system
+              : isDark != null && isDark
+                  ? ThemeMode.dark
+                  : ThemeMode.light;
+        }
+      });
+      _sharedPrefs?.setBool('${widget.id}-follow-system', value);
+    }
 
-    _sharedPrefs?.setBool('${widget.id}-follow-system', value);
     if (widget.keepSettingOnDisableFollow)
       _sharedPrefs?.setBool('${widget.id}-dark-mode', _mode == ThemeMode.dark);
   }

@@ -3,21 +3,19 @@
 import 'package:flutter/widgets.dart';
 
 class ReloadChildWidget extends StatefulWidget {
-  final Widget child;
+  final Widget? child;
 
   const ReloadChildWidget({
-    Key key,
+    Key? key,
     this.child,
   }) : super(key: key);
 
   @override
   _ReloadChildWidgetState createState() => _ReloadChildWidgetState();
 
-  static _ReloadChildWidgetState of(BuildContext context) {
-    assert(context != null);
-
+  static _ReloadChildWidgetState? of(BuildContext context) {
     return (context
-            .getElementForInheritedWidgetOfExactType<_RestartInheritedWidget>()
+            .getElementForInheritedWidgetOfExactType<_RestartInheritedWidget>()!
             .widget as _RestartInheritedWidget)
         .state;
   }
@@ -39,18 +37,18 @@ class _ReloadChildWidgetState extends State<ReloadChildWidget> {
     return _RestartInheritedWidget(
       key: _key,
       state: this,
-      child: widget.child,
+      child: widget.child!,
     );
   }
 }
 
 class _RestartInheritedWidget extends InheritedWidget {
-  final _ReloadChildWidgetState state;
+  final _ReloadChildWidgetState? state;
 
   _RestartInheritedWidget({
-    Key key,
+    Key? key,
     this.state,
-    Widget child,
+    required Widget child,
   }) : super(key: key, child: child);
 
   @override

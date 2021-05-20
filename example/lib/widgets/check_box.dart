@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 
 class CheckBox extends StatelessWidget {
   const CheckBox({
-    Key key,
+    Key? key,
     this.active = false,
     this.label = '',
     this.onTap,
@@ -11,12 +11,12 @@ class CheckBox extends StatelessWidget {
 
   final bool active;
   final String label;
-  final Function onTap;
+  final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTap as void Function()?,
       child: Container(
         color: Colors.black12,
         padding: const EdgeInsets.symmetric(horizontal: 8.0),

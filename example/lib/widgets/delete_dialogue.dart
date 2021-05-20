@@ -5,11 +5,11 @@ import 'package:themes_manager/theme_manager.dart';
 
 class DeleteSettingDialogue extends StatelessWidget {
   const DeleteSettingDialogue({
-    Key key,
+    Key? key,
     this.onCancel,
   }) : super(key: key);
 
-  final Function onCancel;
+  final Function? onCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +38,9 @@ class DeleteSettingDialogue extends StatelessWidget {
                     Button(
                       label: 'Yes',
                       onTap: () {
-                        ThemesManager.of(context).resetAll().then((_) {
-                          ReloadChildWidget.of(context).restartApp();
-                          onCancel();
+                        ThemesManager.of(context)!.resetAll().then((_) {
+                          ReloadChildWidget.of(context)!.restartApp();
+                          onCancel!();
                         });
                       },
                     ),
@@ -60,9 +60,9 @@ class DeleteSettingDialogue extends StatelessWidget {
 }
 
 class Button extends StatefulWidget {
-  const Button({Key key, this.label, this.onTap}) : super(key: key);
-  final Function onTap;
-  final String label;
+  const Button({Key? key, this.label, this.onTap}) : super(key: key);
+  final Function? onTap;
+  final String? label;
   @override
   _ButtonState createState() => _ButtonState();
 }
@@ -81,7 +81,7 @@ class _ButtonState extends State<Button> {
         });
         Future.delayed(Duration(
           milliseconds: 50,
-        )).then((value) => widget.onTap());
+        )).then((value) => widget.onTap!());
       },
       child: AnimatedContainer(
         duration: Duration(milliseconds: 2),
@@ -95,7 +95,7 @@ class _ButtonState extends State<Button> {
         ),
         child: Center(
             child: Text(
-          widget.label,
+          widget.label!,
           style: TextStyle(color: _color),
         )),
       ),

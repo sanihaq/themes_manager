@@ -3,13 +3,13 @@ import 'package:themes_manager/theme_handler.dart';
 
 class ThemeSelector extends StatefulWidget {
   const ThemeSelector({
-    Key key,
-    @required this.color,
-    @required this.themeKey,
+    Key? key,
+    required this.color,
+    required this.themeKey,
     this.active = false,
   }) : super(key: key);
 
-  final Color color;
+  final Color? color;
 
   final bool active;
 
@@ -33,7 +33,7 @@ class _ThemeSelectorState extends State<ThemeSelector> {
         setState(() {
           size = 30;
         });
-        ThemesManager.of(context).setCurrentCustomData(widget.themeKey);
+        ThemesManager.of(context)!.setCurrentCustomData(widget.themeKey);
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),

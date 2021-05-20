@@ -13,12 +13,12 @@ import 'theme_selector.dart';
 
 class AppSettings extends StatefulWidget {
   const AppSettings({
-    Key key,
-    @required this.isMultiTheme,
-    @required this.noAppWidget,
-    @required this.isCupertino,
-    @required this.onlyWidgetApp,
-    @required this.setApp,
+    Key? key,
+    required this.isMultiTheme,
+    required this.noAppWidget,
+    required this.isCupertino,
+    required this.onlyWidgetApp,
+    required this.setApp,
   }) : super(key: key);
 
   final bool isMultiTheme;
@@ -129,7 +129,7 @@ class _AppSettingsState extends State<AppSettings> {
                                 Stack(
                                   children: [
                                     Row(
-                                      children: ThemesManager.of(context)
+                                      children: ThemesManager.of(context)!
                                           .customDataMap
                                           .entries
                                           .map((entries) {
@@ -139,7 +139,7 @@ class _AppSettingsState extends State<AppSettings> {
                                           color: data.color,
                                           themeKey: entries.key,
                                           active: entries.key ==
-                                              ThemesManager.of(context)
+                                              ThemesManager.of(context)!
                                                   .currentCustomDataKey,
                                         );
                                       }).toList(),

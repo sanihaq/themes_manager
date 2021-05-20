@@ -39,7 +39,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Key key = UniqueKey();
-  SharedPreferences _sharedPrefs;
+  SharedPreferences? _sharedPrefs;
 
   bool isCupertino = false;
   bool onlyWidgetApp = false;
@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   // only for debug example app
-  setApp({bool isMulti, bool isCuper, bool isOnly, bool noApp}) {
+  setApp({bool? isMulti, bool? isCuper, bool? isOnly, bool? noApp}) {
     setState(() {
       isCupertino = isCuper ?? isCupertino;
       onlyWidgetApp = isOnly ?? onlyWidgetApp;
@@ -102,29 +102,28 @@ class _MyAppState extends State<MyApp> {
 
 class MultiMaterialApp extends StatelessWidget {
   const MultiMaterialApp({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       // pass [ThemeManger] data to effect material app across app
-      theme: ThemesManager.of(context).lightTheme,
-      darkTheme: ThemesManager.of(context).darkTheme,
-      themeMode: ThemesManager.of(context).themeMode,
+      theme: ThemesManager.of(context)!.lightTheme,
+      darkTheme: ThemesManager.of(context)!.darkTheme,
+      themeMode: ThemesManager.of(context)!.themeMode,
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-              "${ThemesManager.of(context).currentThemeKey} / ${ThemesManager.of(context).themesMap.length}" ??
-                  ''),
+              "${ThemesManager.of(context)!.currentThemeKey} / ${ThemesManager.of(context)!.themesMap.length}"),
           leading: IconButton(
             icon: Icon(Icons.refresh),
-            onPressed: () => ThemesManager.of(context).setTheme(
-              ThemesManager.of(context)
+            onPressed: () => ThemesManager.of(context)!.setTheme(
+              ThemesManager.of(context)!
                   .themesMap
                   .keys
                   .toList()[Random().nextInt(
-                ThemesManager.of(context).themesMap.keys.toList().length,
+                ThemesManager.of(context)!.themesMap.keys.toList().length,
               )],
               apply: true,
             ),
@@ -147,23 +146,23 @@ class MultiMaterialApp extends StatelessWidget {
 
 class TestMaterialApp extends StatelessWidget {
   const TestMaterialApp({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemesManager.of(context).lightTheme,
-      darkTheme: ThemesManager.of(context).darkTheme,
-      themeMode: ThemesManager.of(context).themeMode,
+      theme: ThemesManager.of(context)!.lightTheme,
+      darkTheme: ThemesManager.of(context)!.darkTheme,
+      themeMode: ThemesManager.of(context)!.themeMode,
       initialRoute: "/",
       title: 'Theming',
       color: Theme.of(context).primaryColor,
       home: MyHomePage(title: 'Flutter Demo Home Page'),
       builder: (context, child) {
         // Add additional theme after app initialization (even after app is build)
-        ThemesManager.of(context).generateTheme(
+        ThemesManager.of(context)!.generateTheme(
           ThemeManagerData(
             key: 'generated-theme',
             name: 'Generated Theme',
@@ -171,7 +170,7 @@ class TestMaterialApp extends StatelessWidget {
             themeData: ThemeData.dark().copyWith(),
           ),
         );
-        return child;
+        return child!;
       },
     );
   }
@@ -179,14 +178,14 @@ class TestMaterialApp extends StatelessWidget {
 
 class MultiCupertinoApp extends StatelessWidget {
   const MultiCupertinoApp({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
       // theme for [CupertinoApp]
-      theme: ThemesManager.of(context).cupertinoTheme,
+      theme: ThemesManager.of(context)!.cupertinoTheme,
       home: CupertinoPageScaffold(
         child: Stack(
           children: [
@@ -222,12 +221,12 @@ class MultiCupertinoApp extends StatelessWidget {
                             .primaryContrastingColor,
                       ),
                       onPressed: () =>
-                          ThemesManager.of(context).setCupertinoTheme(
-                        ThemesManager.of(context)
+                          ThemesManager.of(context)!.setCupertinoTheme(
+                        ThemesManager.of(context)!
                             .cupertinoThemesMap
                             .keys
                             .toList()[Random().nextInt(
-                          ThemesManager.of(context)
+                          ThemesManager.of(context)!
                               .cupertinoThemesMap
                               .keys
                               .toList()
@@ -238,7 +237,7 @@ class MultiCupertinoApp extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        ThemesManager.of(context).currentCupertinoThemeKey,
+                        ThemesManager.of(context)!.currentCupertinoThemeKey!,
                         style: TextStyle(
                           color: ThemesManager.cupertinoThemeOf(context)
                               .primaryContrastingColor,
@@ -258,20 +257,20 @@ class MultiCupertinoApp extends StatelessWidget {
 
 class TestCupertinoApp extends StatelessWidget {
   const TestCupertinoApp({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemesManager.of(context).cupertinoTheme,
+      theme: ThemesManager.of(context)!.cupertinoTheme,
       initialRoute: "/",
       title: 'Theming',
       color: Theme.of(context).primaryColor,
       home: CupertinoStoreHomePage(),
       builder: (context, child) {
-        ThemesManager.of(context).generateCupertinoTheme(
+        ThemesManager.of(context)!.generateCupertinoTheme(
           CupertinoThemeManagerData(
             key: 'generated',
             name: 'Generated on Build',
@@ -281,7 +280,7 @@ class TestCupertinoApp extends StatelessWidget {
             ),
           ),
         );
-        ThemesManager.of(context).addToCustomData(
+        ThemesManager.of(context)!.addToCustomData(
           CustomThemeManagerData(
             key: 'generated',
             data: Name(
@@ -292,11 +291,11 @@ class TestCupertinoApp extends StatelessWidget {
           ),
         );
         //! getting data this way is possible too
-        final Name name = ThemesManager.of(context)
-            .customDataMap[ThemesManager.of(context).currentCupertinoThemeKey]
-            ?.data;
+        final Name? name = ThemesManager.of(context)!
+            .customDataMap[ThemesManager.of(context)!.currentCupertinoThemeKey!]
+            ?.data as Name?;
         print(name?.description);
-        return child;
+        return child!;
       },
     );
   }
@@ -304,7 +303,7 @@ class TestCupertinoApp extends StatelessWidget {
 
 class WidgetApp extends StatelessWidget {
   const WidgetApp({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -317,7 +316,7 @@ class WidgetApp extends StatelessWidget {
           color: ThemesManager.themeOf(context).canvasColor,
           child: Center(
             child: ElevatedButton(
-              onPressed: ThemesManager.of(context).toggleDarkMode,
+              onPressed: ThemesManager.of(context)!.toggleDarkMode,
               child: Text(
                 'Hello, world!',
                 textDirection: TextDirection.ltr,
@@ -333,7 +332,7 @@ class WidgetApp extends StatelessWidget {
 
 class NoAppWidget extends StatelessWidget {
   const NoAppWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -348,7 +347,7 @@ class NoAppWidget extends StatelessWidget {
             height: 100,
             child: Center(
               child: ElevatedButton(
-                onPressed: ThemesManager.of(context).toggleDarkMode,
+                onPressed: ThemesManager.of(context)!.toggleDarkMode,
                 child: Text(
                   'Toggle',
                   textDirection: TextDirection.ltr,
@@ -359,23 +358,23 @@ class NoAppWidget extends StatelessWidget {
           SizedBox(
             height: 8.0,
           ),
-          ...ThemesManager.of(context).themesMap.keys.map((themeKey) {
+          ...ThemesManager.of(context)!.themesMap.keys.map((themeKey) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith((states) =>
-                      ThemesManager.of(context)
-                          .themesMap[themeKey]
+                      ThemesManager.of(context)!
+                          .themesMap[themeKey]!
                           .themeData
                           .primaryColor),
                 ),
-                onPressed: () => ThemesManager.of(context)
+                onPressed: () => ThemesManager.of(context)!
                     .setTheme(themeKey, apply: true, both: false),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (ThemesManager.of(context).checkIfDefault(themeKey))
+                    if (ThemesManager.of(context)!.checkIfDefault(themeKey))
                       Icon(
                         Icons.star,
                         size: 14,
@@ -384,11 +383,11 @@ class NoAppWidget extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        ThemesManager.of(context).themesMap[themeKey].name,
+                        ThemesManager.of(context)!.themesMap[themeKey]!.name!,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
-                    if (ThemesManager.of(context).checkIfCurrent(themeKey))
+                    if (ThemesManager.of(context)!.checkIfCurrent(themeKey))
                       Icon(
                         Icons.done_outline,
                         size: 14,

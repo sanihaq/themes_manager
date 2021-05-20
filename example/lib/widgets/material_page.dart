@@ -4,9 +4,9 @@ import 'package:themes_manager/theme_manager.dart';
 import '../models.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -17,10 +17,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title!),
         actions: [
           ElevatedButton(
-            onPressed: ThemesManager.of(context).resetSettings,
+            onPressed: ThemesManager.of(context)!.resetSettings,
             child: Text('Delete'),
           ),
         ],
@@ -31,8 +31,8 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Center(
               child: Switch(
-                value: ThemesManager.of(context).checkDark(),
-                onChanged: (_) => ThemesManager.of(context).toggleDarkMode(),
+                value: ThemesManager.of(context)!.checkDark(),
+                onChanged: (_) => ThemesManager.of(context)!.toggleDarkMode(),
                 activeTrackColor: Colors.lightGreenAccent,
                 activeColor: Colors.green,
               ),
@@ -42,8 +42,8 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Checkbox(
                   value:
-                      ThemesManager.of(context).themeMode == ThemeMode.system,
-                  onChanged: ThemesManager.of(context).setThemeModeToSystem,
+                      ThemesManager.of(context)!.themeMode == ThemeMode.system,
+                  onChanged: ThemesManager.of(context)!.setThemeModeToSystem,
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   visualDensity: VisualDensity.compact,
                 ),
@@ -56,12 +56,12 @@ class _MyHomePageState extends State<MyHomePage> {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  ...ThemesManager.of(context).themesMap.keys.map((themeKey) {
+                  ...ThemesManager.of(context)!.themesMap.keys.map((themeKey) {
                     return Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          ThemesManager.of(context)
+                          ThemesManager.of(context)!
                               .setTheme(themeKey, both: true, apply: true);
                           print(ThemesManager.customDataOf<Name>(
                                   context, ThemeType.material)
@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              if (ThemesManager.of(context)
+                              if (ThemesManager.of(context)!
                                   .checkIfDefault(themeKey))
                                 Icon(
                                   Icons.star,
@@ -81,9 +81,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  ThemesManager.of(context)
-                                      .themesMap[themeKey]
-                                      .name,
+                                  ThemesManager.of(context)!
+                                      .themesMap[themeKey]!
+                                      .name!,
                                 ),
                               ),
                             ],
@@ -91,10 +91,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.resolveWith(
-                          (states) =>
-                              ThemesManager.of(context).checkIfCurrent(themeKey)
-                                  ? ThemesManager.themeOf(context).primaryColor
-                                  : Colors.blue,
+                          (states) => ThemesManager.of(context)!
+                                  .checkIfCurrent(themeKey)
+                              ? ThemesManager.themeOf(context).primaryColor
+                              : Colors.blue,
                         )),
                       ),
                     );

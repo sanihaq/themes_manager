@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 
 class Radio extends StatelessWidget {
   const Radio({
-    Key key,
+    Key? key,
     this.active = false,
     this.label = '',
     this.onTap,
@@ -13,12 +13,12 @@ class Radio extends StatelessWidget {
 
   final String label;
 
-  final Function onTap;
+  final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTap as void Function()?,
       child: Container(
         margin: const EdgeInsets.all(2.0),
         color: Colors.black12,
