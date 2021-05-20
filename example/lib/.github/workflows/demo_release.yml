@@ -2,7 +2,7 @@ name: Demo App Android Release
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ master ]
 
 jobs:
   version:
@@ -68,4 +68,3 @@ jobs:
         tag: ${{ steps.version.outputs.content }}
         commit: ${{ github.sha }}
         prerelease: true
-        
