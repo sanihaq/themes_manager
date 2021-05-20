@@ -31,4 +31,4 @@ jobs:
           draft: false
           regex: "/^Release: #{semver}$/i"
         env:
-          GITHUB_TOKEN: ${{ secrets.GHZ_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
