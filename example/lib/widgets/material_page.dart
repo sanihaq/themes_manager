@@ -19,7 +19,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
-          RaisedButton(
+          ElevatedButton(
             onPressed: ThemesManager.of(context).resetSettings,
             child: Text('Delete'),
           ),
@@ -53,39 +53,54 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
-            Column(
-              children: [
-                ...ThemesManager.of(context).themesMap.keys.map((themeKey) {
-                  return RaisedButton(
-                    onPressed: () {
-                      ThemesManager.of(context)
-                          .setTheme(themeKey, both: true, apply: true);
-                      print(ThemesManager.customDataOf<Name>(
-                              context, ThemeType.material)
-                          ?.description);
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (ThemesManager.of(context).checkIfDefault(themeKey))
-                          Icon(
-                            Icons.star,
-                            size: 14,
-                          ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            ThemesManager.of(context).themesMap[themeKey].name,
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  ...ThemesManager.of(context).themesMap.keys.map((themeKey) {
+                    return Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          ThemesManager.of(context)
+                              .setTheme(themeKey, both: true, apply: true);
+                          print(ThemesManager.customDataOf<Name>(
+                                  context, ThemeType.material)
+                              ?.description);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (ThemesManager.of(context)
+                                  .checkIfDefault(themeKey))
+                                Icon(
+                                  Icons.star,
+                                  size: 14,
+                                ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  ThemesManager.of(context)
+                                      .themesMap[themeKey]
+                                      .name,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                    color: ThemesManager.of(context).checkIfCurrent(themeKey)
-                        ? ThemesManager.themeOf(context).primaryColor
-                        : Colors.blue,
-                  );
-                }).toList(),
-              ],
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) =>
+                              ThemesManager.of(context).checkIfCurrent(themeKey)
+                                  ? ThemesManager.themeOf(context).primaryColor
+                                  : Colors.blue,
+                        )),
+                      ),
+                    );
+                  }).toList(),
+                ],
+              ),
             )
           ],
         ),

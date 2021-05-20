@@ -202,7 +202,7 @@ class MultiCupertinoApp extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                height: 130,
+                height: 150,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16.0),
                   color: ThemesManager.cupertinoThemeOf(context).primaryColor,
@@ -316,7 +316,7 @@ class WidgetApp extends StatelessWidget {
         return Container(
           color: ThemesManager.themeOf(context).canvasColor,
           child: Center(
-            child: RaisedButton(
+            child: ElevatedButton(
               onPressed: ThemesManager.of(context).toggleDarkMode,
               child: Text(
                 'Hello, world!',
@@ -347,7 +347,7 @@ class NoAppWidget extends StatelessWidget {
             color: ThemesManager.themeOf(context).primaryColor,
             height: 100,
             child: Center(
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: ThemesManager.of(context).toggleDarkMode,
                 child: Text(
                   'Toggle',
@@ -356,37 +356,46 @@ class NoAppWidget extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(
+            height: 8.0,
+          ),
           ...ThemesManager.of(context).themesMap.keys.map((themeKey) {
-            return RaisedButton(
-              color: ThemesManager.of(context)
-                  .themesMap[themeKey]
-                  .themeData
-                  .primaryColor,
-              onPressed: () => ThemesManager.of(context)
-                  .setTheme(themeKey, apply: true, both: false),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (ThemesManager.of(context).checkIfDefault(themeKey))
-                    Icon(
-                      Icons.star,
-                      size: 14,
-                      color: Colors.yellow,
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith((states) =>
+                      ThemesManager.of(context)
+                          .themesMap[themeKey]
+                          .themeData
+                          .primaryColor),
+                ),
+                onPressed: () => ThemesManager.of(context)
+                    .setTheme(themeKey, apply: true, both: false),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (ThemesManager.of(context).checkIfDefault(themeKey))
+                      Icon(
+                        Icons.star,
+                        size: 14,
+                        color: Colors.yellow,
+                      ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        ThemesManager.of(context).themesMap[themeKey].name,
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      ThemesManager.of(context).themesMap[themeKey].name,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  if (ThemesManager.of(context).checkIfCurrent(themeKey))
-                    Icon(
-                      Icons.done_outline,
-                      size: 14,
-                      color: Colors.amber,
-                    ),
-                ],
+                    if (ThemesManager.of(context).checkIfCurrent(themeKey))
+                      Icon(
+                        Icons.done_outline,
+                        size: 14,
+                        color: Colors.amber,
+                      ),
+                  ],
+                ),
               ),
             );
           }).toList(),

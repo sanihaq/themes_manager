@@ -11,15 +11,23 @@ import 'cupertino_theme_data.dart';
 import 'custom_data.dart';
 import 'theme_data.dart';
 
+extension FirstOrNullExtension<T> on List<T> {
+  T? get firstOrNull => this.isEmpty ? null : this.first;
+}
+
+extension LastOrNullExtension<T> on List<T> {
+  T? get lastOrNull => this.isEmpty ? null : this.last;
+}
+
 enum ThemeType { material, cupertino, custom }
 
 class _ThemeManager extends InheritedWidget {
-  final ThemesManagerState data;
+  final ThemesManagerState? data;
 
   _ThemeManager({
     this.data,
-    Key key,
-    @required Widget child,
+    Key? key,
+    required Widget child,
   }) : super(key: key, child: child);
 
   @override
@@ -36,17 +44,17 @@ class ThemesManager extends StatefulWidget {
   final String id;
 
   /// use to set a light theme on start of an app. gets overwritten by system store.
-  final String defaultLightTheme;
+  final String? defaultLightTheme;
 
   /// use to set a dark theme on start of an app. gets overwritten by system store.
 
-  final String defaultDarkTheme;
+  final String? defaultDarkTheme;
 
   /// use to set a cupertino theme on start of an app. gets overwritten by system store.
-  final String defaultCupertinoTheme;
+  final String? defaultCupertinoTheme;
 
   /// sets default [CustomData], sets to first available [data] if null. gets overwritten by system store.
-  final String defaultCustomData;
+  final String? defaultCustomData;
 
   /// use to sets initial theme mode on start of app. gets overwritten by system store.
   final ThemeMode themeMode;
@@ -55,16 +63,16 @@ class ThemesManager extends StatefulWidget {
   final bool keepSettingOnDisableFollow;
 
   /// give a color to the [WidgetsApp] theme manager uses internally.
-  final Color appColor;
+  final Color? appColor;
 
   /// All your [ThemeManagerData] in a list
-  final List<ThemeManagerData> themes;
+  final List<ThemeManagerData>? themes;
 
   /// All your [CupertinoThemeManagerData] in a list
-  final List<CupertinoThemeManagerData> cupertinoThemes;
+  final List<CupertinoThemeManagerData>? cupertinoThemes;
 
   /// All your [CustomThemeManagerData] in a list
-  final List<CustomThemeManagerData> customData;
+  final List<CustomThemeManagerData>? customData;
 
   /// [ThemesManager] is best used as parent of [MaterialApp] or [CupertinoApp] or [WidgetsApp],
   ///
@@ -79,7 +87,7 @@ class ThemesManager extends StatefulWidget {
   ///
   /// [cupertinoThemes] does not support [themeMode]. it always follow system setting.
   ThemesManager({
-    Key key,
+    Key? key,
     this.id = 'app',
     this.keepSettingOnDisableFollow = false,
     this.themeMode = ThemeMode.system,
@@ -91,7 +99,7 @@ class ThemesManager extends StatefulWidget {
     this.cupertinoThemes,
     this.customData,
     this.appColor,
-    @required this.child,
+    required this.child,
   }) : super(key: key) {
     assert(
       themes == null && defaultLightTheme == null && defaultDarkTheme == null ||
@@ -113,25 +121,28 @@ class ThemesManager extends StatefulWidget {
   /// get state of [ThemeManger] of current context.
   ///
   /// Access full theme list via designated getters (as { key: value } pair).
-  static ThemesManagerState of(BuildContext context) {
+  static ThemesManagerState? of(BuildContext context) {
     _ThemeManager inherited =
-        (context.dependOnInheritedWidgetOfExactType<_ThemeManager>());
+        context.dependOnInheritedWidgetOfExactType<_ThemeManager>()!;
     return inherited.data;
   }
 
   /// get current [ThemeData] of current [ThemeManger]
   static ThemeData themeOf(BuildContext context) {
     _ThemeManager inherited =
-        (context.dependOnInheritedWidgetOfExactType<_ThemeManager>());
-    return inherited.data.themesMap[inherited.data.currentThemeKey].themeData;
+        context.dependOnInheritedWidgetOfExactType<_ThemeManager>()!;
+    return inherited
+        .data!.themesMap[inherited.data!.currentThemeKey!]!.themeData;
   }
 
   /// get current [CupertinoThemeData] of current [ThemeManger]
   static CupertinoThemeData cupertinoThemeOf(BuildContext context) {
     _ThemeManager inherited =
-        (context.dependOnInheritedWidgetOfExactType<_ThemeManager>());
-    return inherited.data
-        .cupertinoThemesMap[inherited.data.currentCupertinoThemeKey].themeData;
+        context.dependOnInheritedWidgetOfExactType<_ThemeManager>()!;
+    return inherited
+        .data!
+        .cupertinoThemesMap[inherited.data!.currentCupertinoThemeKey!]!
+        .themeData;
   }
 
   /// [customData] could be null.
@@ -143,31 +154,33 @@ class ThemesManager extends StatefulWidget {
   /// ```
   /// ThemeManager.customDataOf<ExampleClass>(context, ThemeType.cupertino)?.example
   /// ```
-  static T customDataOf<T>(BuildContext context,
+  static T? customDataOf<T>(BuildContext context,
       [ThemeType type = ThemeType.custom]) {
-    _ThemeManager inherited =
+    _ThemeManager? inherited =
         (context.dependOnInheritedWidgetOfExactType<_ThemeManager>());
     switch (type) {
       case ThemeType.material:
-        return inherited
-            .data.customDataMap[inherited.data.currentThemeKey]?.data as T;
+        return inherited!
+            .data!.customDataMap[inherited.data!.currentThemeKey!]?.data as T?;
       case ThemeType.cupertino:
-        return inherited.data
-            .customDataMap[inherited.data.currentCupertinoThemeKey]?.data as T;
+        return inherited!
+            .data!
+            .customDataMap[inherited.data!.currentCupertinoThemeKey!]
+            ?.data as T?;
       case ThemeType.custom:
-        return inherited
-            .data.customDataMap[inherited.data.currentCustomDataKey]?.data as T;
+        return inherited!.data!
+            .customDataMap[inherited.data!.currentCustomDataKey!]?.data as T?;
       default:
-        return inherited
-            .data.customDataMap[inherited.data.currentCustomDataKey]?.data as T;
+        return inherited!.data!
+            .customDataMap[inherited.data!.currentCustomDataKey!]?.data as T?;
     }
   }
 }
 
 class ThemesManagerState extends State<ThemesManager> {
-  SharedPreferences _sharedPrefs;
+  SharedPreferences? _sharedPrefs;
 
-  BuildContext _mediaContext;
+  BuildContext? _mediaContext;
 
   Map<String, ThemeManagerData> _themes = Map();
 
@@ -175,15 +188,15 @@ class ThemesManagerState extends State<ThemesManager> {
 
   Map<String, CustomThemeManagerData> _customData = Map();
 
-  String _currentLightThemeKey;
+  String? _currentLightThemeKey;
 
-  String _currentDarkThemeKey;
+  String? _currentDarkThemeKey;
 
-  String _currentCupertinoThemeKey;
+  String? _currentCupertinoThemeKey;
 
-  String _currentCustomDataKey;
+  String? _currentCustomDataKey;
 
-  ThemeMode _mode;
+  ThemeMode? _mode;
 
   Map<String, ThemeManagerData> get themesMap => _themes;
 
@@ -193,31 +206,32 @@ class ThemesManagerState extends State<ThemesManager> {
   Map<String, CustomThemeManagerData> get customDataMap => _customData;
 
   /// Current [customData]
-  CustomThemeManagerData get customData =>
-      _customData[_currentCustomDataKey]?.data;
+  CustomThemeManagerData? get customData =>
+      _customData[_currentCustomDataKey!]?.data as CustomThemeManagerData?;
 
   /// Current CupertinoTheme
-  CupertinoThemeData get cupertinoTheme =>
-      _cupertinoThemes[_currentCupertinoThemeKey]?.themeData ?? null;
+  CupertinoThemeData? get cupertinoTheme =>
+      _cupertinoThemes[_currentCupertinoThemeKey!]?.themeData ?? null;
 
   /// Current light theme of Themes
-  ThemeData get lightTheme => _themes[_currentLightThemeKey]?.themeData ?? null;
+  ThemeData? get lightTheme =>
+      _themes[_currentLightThemeKey!]?.themeData ?? null;
 
   /// Current dark theme of Themes
-  ThemeData get darkTheme => _themes[_currentDarkThemeKey]?.themeData ?? null;
+  ThemeData? get darkTheme => _themes[_currentDarkThemeKey!]?.themeData ?? null;
 
   /// Current applied [ThemeMode]
-  ThemeMode get themeMode => _mode;
+  ThemeMode? get themeMode => _mode;
 
   /// get [themeKey] of currently applied cupertino themes .
-  String get currentCupertinoThemeKey => _currentCupertinoThemeKey;
+  String? get currentCupertinoThemeKey => _currentCupertinoThemeKey;
 
   /// get [themeKey] of currently applied theme.
-  String get currentThemeKey =>
+  String? get currentThemeKey =>
       checkDark() ? _currentDarkThemeKey : _currentLightThemeKey;
 
   /// get [themeKey] of currently active [customData].
-  String get currentCustomDataKey => _currentCustomDataKey;
+  String? get currentCustomDataKey => _currentCustomDataKey;
 
   // set default settings either from hard code or from system storage or server.
   @override
@@ -239,12 +253,12 @@ class ThemesManagerState extends State<ThemesManager> {
         ),
       };
     } else {
-      widget.themes.forEach((value) {
+      widget.themes!.forEach((value) {
         _themes[value.key] = ThemeManagerData(
           key: value.key,
           name: value.name ?? '',
           creator: value.creator ?? '',
-          themeData: value.themeData ?? ThemeData(),
+          themeData: value.themeData,
         );
       });
     }
@@ -259,12 +273,12 @@ class ThemesManagerState extends State<ThemesManager> {
         ),
       };
     } else {
-      widget.cupertinoThemes.forEach((value) {
+      widget.cupertinoThemes!.forEach((value) {
         _cupertinoThemes[value.key] = CupertinoThemeManagerData(
           key: value.key,
           name: value.name ?? '',
           creator: value.creator ?? '',
-          themeData: value.themeData ?? CupertinoThemeData(),
+          themeData: value.themeData,
         );
       });
     }
@@ -315,7 +329,7 @@ class ThemesManagerState extends State<ThemesManager> {
 
   /// get [ThemeData] by [key] name of [themesMap]
   /// returns [null] if theme not found
-  ThemeManagerData _getThemeData(String key) {
+  ThemeManagerData? _getThemeData(String key) {
     return _themes.containsKey(key) ? _themes[key] : null;
   }
 
@@ -333,7 +347,7 @@ class ThemesManagerState extends State<ThemesManager> {
   /// follow these kind of structure in [key] for related themes [example-light], [example-dark] or [vary_simple_light_theme], [vary_simple_dark_theme].
   /// Don't use camel cases in [themeKey] like [exampleLight], [exampleDark].
   void setTheme(String themeKey, {bool apply = false, bool both = false}) {
-    final theme = _getThemeData(themeKey).themeData;
+    final theme = _getThemeData(themeKey)!.themeData;
     if (theme.brightness == Brightness.dark) {
       if (both) {
         final key = themeKey.replaceAll('dark', 'light');
@@ -427,7 +441,7 @@ class ThemesManagerState extends State<ThemesManager> {
   bool checkDark() {
     if (_mediaContext == null) return false;
     final Brightness systemBrightnessValue =
-        MediaQuery.of(_mediaContext).platformBrightness;
+        MediaQuery.of(_mediaContext!).platformBrightness;
     return _mode == ThemeMode.system
         ? systemBrightnessValue == Brightness.dark
         : _mode == ThemeMode.dark;
@@ -461,7 +475,6 @@ class ThemesManagerState extends State<ThemesManager> {
   void generateTheme(
     ThemeManagerData themeData,
   ) {
-    assert(themeData != null, "[themeData] can't be null");
     _themes[themeData.key] = themeData;
   }
 
@@ -481,7 +494,6 @@ class ThemesManagerState extends State<ThemesManager> {
   void generateCupertinoTheme(
     CupertinoThemeManagerData themeData,
   ) {
-    assert(themeData != null, "[themeData] can't be null");
     _cupertinoThemes[themeData.key] = themeData;
   }
 
@@ -500,11 +512,11 @@ class ThemesManagerState extends State<ThemesManager> {
     _currentDarkThemeKey = widget.defaultDarkTheme ?? 'default-dark';
     _currentCupertinoThemeKey = widget.defaultCupertinoTheme ?? 'default';
     _currentCustomDataKey =
-        widget.defaultCustomData ?? widget.customData?.first?.key;
+        widget.defaultCustomData ?? widget.customData?.firstOrNull?.key;
   }
 
   // map data to [customData]
-  void _mapCustomData(List<CustomThemeManagerData> dataList) {
+  void _mapCustomData(List<CustomThemeManagerData>? dataList) {
     dataList?.forEach((data) {
       _customData[data.key] = CustomThemeManagerData(
         key: data.key,
@@ -530,6 +542,6 @@ class ThemesManagerState extends State<ThemesManager> {
   /// ! ** Warning ** if you're using [SharedPreferences] in other parts of your app, avoid using this function.
   @deprecated
   Future<bool> resetAll() async {
-    return _sharedPrefs.clear();
+    return _sharedPrefs!.clear();
   }
 }

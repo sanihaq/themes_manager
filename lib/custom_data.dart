@@ -2,13 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-import 'package:flutter/widgets.dart' show required;
-
 class CustomThemeManagerData {
   final String key;
   final Object data;
   CustomThemeManagerData({
-    @required this.key,
-    @required this.data,
+    required this.key,
+    required this.data,
   });
 }

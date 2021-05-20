@@ -2,17 +2,17 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-import 'package:flutter/cupertino.dart' show CupertinoThemeData, required;
+import 'package:flutter/cupertino.dart' show CupertinoThemeData;
 
 class CupertinoThemeManagerData {
   final String key;
-  final String name;
-  final String creator;
+  final String? name;
+  final String? creator;
   final CupertinoThemeData themeData;
   CupertinoThemeManagerData({
-    @required this.key,
+    required this.key,
     this.name,
     this.creator,
-    @required this.themeData,
+    required this.themeData,
   });
 }

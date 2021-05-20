@@ -15,15 +15,15 @@ class CupertinoStoreHomePage extends StatelessWidget {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.home),
-            title: Text('Products'),
+            label: 'Products',
           ),
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.search),
-            title: Text('Search'),
+            label: 'Search',
           ),
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.shopping_cart),
-            title: Text('Cart'),
+            label: 'Cart',
           ),
         ],
       ),
@@ -48,18 +48,15 @@ class CupertinoStoreHomePage extends StatelessWidget {
                       child: CupertinoButton(
                         onPressed: () => ThemesManager.of(context)
                             .setCupertinoTheme(themeKey),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                ThemesManager.of(context)
-                                    .cupertinoThemesMap[themeKey]
-                                    .name,
-                              ),
-                            ),
-                          ],
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            ThemesManager.of(context)
+                                .cupertinoThemesMap[themeKey]
+                                .name,
+                            softWrap: false,
+                            overflow: TextOverflow.clip,
+                          ),
                         ),
                         color: ThemesManager.of(context)
                                     .currentCupertinoThemeKey ==
