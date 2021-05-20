@@ -15,3 +15,19 @@ jobs:
         uses: erickzanardo/flutter-gh-pages@v3
         with:
           workingDir: example
+  windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+      - run: flutter config --enable-windows-desktop
+      - run: flutter build windows
+      - uses: CupOfTea696/gh-action-auto-release@v1.0.0
+        with:
+          title: "Release: $version"
+          tag: "v$semver"
+          draft: false
+          regex: "/^Release: #{semver}$/i"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
